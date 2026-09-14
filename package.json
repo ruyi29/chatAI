@@ -1,0 +1,21 @@
+{
+  "name": "chatai",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run build -w @chatai/shared && concurrently -n api,web -c green,cyan \"npm run dev -w @chatai/api\" \"npm run dev -w @chatai/web\"",
+    "dev:api": "npm run dev -w @chatai/api",
+    "dev:web": "npm run dev -w @chatai/web",
+    "build": "npm run build -w @chatai/shared && npm run build -w @chatai/api && npm run build -w @chatai/web",
+    "prisma:generate": "npm run prisma:generate -w @chatai/api",
+    "prisma:migrate": "npm run prisma:migrate -w @chatai/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "typescript": "^5.9.0"
+  }
+}

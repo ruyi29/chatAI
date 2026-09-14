@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatAI</title>
+    <script>
+      (() => {
+        try {
+          const root = document.documentElement;
+          const storage = window.localStorage;
+          const theme = storage.getItem("chatai-theme");
+          const density = storage.getItem("chatai-density");
+          const accent = storage.getItem("chatai-accent");
+          const motion = storage.getItem("chatai-motion");
+          const mood = storage.getItem("chatai-visual-mood");
+          const intensityValue = storage.getItem("chatai-soft-intensity");
+          const intensityNumber = intensityValue === null ? 55 : Number(intensityValue);
+          const intensity = Number.isFinite(intensityNumber) ? Math.min(100, Math.max(0, Math.round(intensityNumber))) : 55;
+          root.dataset.theme = theme === "dark" || (theme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+          root.dataset.density = density === "compact" ? "compact" : "comfortable";
+          root.dataset.accent = ["emerald", "blue", "violet", "coral", "rose", "champagne"].includes(accent) ? accent : "emerald";
+          root.dataset.motion = ["full", "subtle", "reduced"].includes(motion) ? motion : "full";
+          root.dataset.mood = ["cyber", "fusion", "soft"].includes(mood) ? mood : "cyber";
+          root.style.setProperty("--soft-bg-mix", `${Math.round(intensity * .16)}%`);
+          root.style.setProperty("--soft-glow-opacity", (intensity * .0034).toFixed(2));
+          root.style.setProperty("--soft-blur", `${Math.round(6 + intensity * .12)}px`);
+        } catch {
+          // Preferences are optional; the app applies safe defaults after mounting.
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+enum MessageRole {
+  SYSTEM
+  USER
+  ASSISTANT
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?        @db.VarChar(80)
+  email         String?        @unique @db.VarChar(191)
+  passwordHash  String?        @db.VarChar(255)
+  conversations Conversation[]
+  groups        ConversationGroup[]
+  prompts       PromptTemplate[]
+  attachments   Attachment[]
+  sessions      UserSession[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique @db.VarChar(64)
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  userId    String?
+  title     String    @db.VarChar(191)
+  isFavorite Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  groupId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  group     ConversationGroup? @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([groupId])
+  @@index([updatedAt])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String       @db.Text
+  parentMessageId String?
+  variantIndex   Int          @default(0)
+  parentMessage  Message?     @relation("MessageVariants", fields: [parentMessageId], references: [id], onDelete: SetNull)
+  variants       Message[]    @relation("MessageVariants")
+  attachments    Attachment[]
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+  @@index([parentMessageId, variantIndex])
+}
+
+model ConversationGroup {
+  id            String         @id @default(cuid())
+  userId        String
+  name          String         @db.VarChar(80)
+  color         String         @default("#167b6f") @db.VarChar(20)
+  sortOrder     Int            @default(0)
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversations Conversation[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([userId, sortOrder])
+}
+
+model PromptTemplate {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String   @db.VarChar(80)
+  content   String   @db.Text
+  category  String   @default("我的") @db.VarChar(40)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, updatedAt])
+}
+
+model Attachment {
+  id          String   @id @default(cuid())
+  userId      String
+  messageId   String?
+  name        String   @db.VarChar(191)
+  mimeType    String   @db.VarChar(120)
+  size        Int
+  storagePath String   @db.VarChar(500)
+  extractedText String? @db.LongText
+  status      String   @default("READY") @db.VarChar(20)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message     Message? @relation(fields: [messageId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([messageId])
+}

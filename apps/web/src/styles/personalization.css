@@ -1,0 +1,744 @@
+/* Optional visual moods. Cyber remains the untouched default; these rules only
+   become active after the user explicitly chooses fusion or soft. */
+
+:root {
+  --accent-ink: var(--accent);
+}
+
+:root[data-theme="dark"][data-accent="rose"] {
+  --accent-ink: #f3a0bb;
+}
+
+:root[data-theme="dark"][data-accent="champagne"] {
+  --accent-ink: #edbd83;
+}
+
+:root:is([data-theme="dark"][data-accent="rose"], [data-theme="dark"][data-accent="champagne"]) :is(
+  .settings-header p,
+  .soft-intensity output,
+  .motion-options button.active,
+  .conversation-filters button.active,
+  .prompt-creator summary,
+  .prompt-grid i,
+  .workspace-library__title p,
+  .workspace-library__tabs button.active > svg,
+  .workspace-library__editor-heading > div,
+  .command-palette-search > svg,
+  .command-palette-clear:hover,
+  .command-palette-escape:hover,
+  .command-palette-option:not(.is-conversation):not(.is-prompt) .command-palette-icon,
+  .account-dialog header p,
+  .md-renderer a
+) {
+  color: var(--accent-ink);
+}
+
+.accent-options .rose {
+  background: #b83b69;
+}
+
+.accent-options .champagne {
+  background: #9f6129;
+}
+
+/* The additional preference groups can make the drawer taller than the viewport. */
+.settings-drawer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+  scrollbar-color: color-mix(in srgb, var(--muted) 28%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+/* Keep the compact composer clean while preserving touch, wheel and keyboard scrolling. */
+.composer textarea {
+  scrollbar-width: none;
+}
+
+.composer textarea::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.soft-intensity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, var(--border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+.setting-group > .setting-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.visual-mood-setting > .setting-label small {
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-size: 8px;
+  font-weight: 650;
+}
+
+.preset-setting > .setting-label small {
+  margin-left: auto;
+  color: var(--subtle);
+  font-size: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.preset-list {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 68%, transparent);
+}
+
+.preset-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  min-height: 42px;
+}
+
+.preset-row + .preset-row {
+  border-top: 1px solid var(--border);
+}
+
+.preset-apply {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  text-align: left;
+}
+
+.preset-apply > span {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preset-apply > small {
+  color: var(--subtle);
+  font-size: 7px;
+}
+
+.preset-apply:hover,
+.preset-apply:focus-visible {
+  background: color-mix(in srgb, var(--accent-soft) 28%, var(--surface));
+}
+
+.preset-apply.active {
+  color: var(--accent-ink, var(--accent));
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  box-shadow: inset 2px 0 var(--accent);
+}
+
+.preset-icon-button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  margin-right: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  color: var(--muted);
+  background: transparent;
+}
+
+.preset-icon-button:hover,
+.preset-icon-button:focus-visible {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.preset-icon-button.danger:hover,
+.preset-icon-button.danger:focus-visible {
+  color: #b5404c;
+  background: #fae9eb;
+}
+
+.preset-icon-button.primary {
+  margin: 0;
+  color: #fff;
+  background: var(--accent);
+}
+
+.preset-save-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.preset-save-form input {
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: 0;
+  color: var(--text);
+  background: var(--surface);
+  font-size: 10px;
+}
+
+.preset-save-form input:focus {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+.preset-status {
+  min-height: 14px;
+  margin: -1px 2px 0;
+  color: var(--accent-ink, var(--accent));
+  font-size: 9px;
+  line-height: 14px;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.preset-status:not(:empty) {
+  opacity: 1;
+}
+
+.streaming-continuation {
+  width: max-content;
+  margin-top: 8px;
+}
+
+.message-bubble > .streaming-continuation:first-child {
+  margin-top: 0;
+}
+
+.setting-switch {
+  position: relative;
+  display: grid !important;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 32px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.setting-switch input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.setting-switch > span {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface-hover);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.setting-switch > span::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 2px 6px rgba(15, 28, 21, .18);
+  content: "";
+  transition: transform 180ms ease;
+}
+
+.setting-switch input:checked + span {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.setting-switch input:checked + span::after {
+  transform: translateX(18px);
+}
+
+.setting-switch input:focus-visible + span {
+  outline: 3px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  outline-offset: 2px;
+}
+
+.soft-intensity-header,
+.intensity-scale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.soft-intensity-header > label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.intensity-scale {
+  color: var(--subtle);
+  font-size: 8px;
+}
+
+.soft-intensity input[type="range"] {
+  width: 100%;
+  height: 32px;
+  min-height: 32px;
+  margin: 0;
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  accent-color: var(--accent);
+}
+
+.soft-intensity input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--mood-rose, var(--accent)) 24%, var(--border)),
+    color-mix(in srgb, var(--mood-lilac, var(--accent)) 32%, var(--border)),
+    color-mix(in srgb, var(--mood-aqua, var(--accent)) 24%, var(--border)));
+}
+
+.soft-intensity input[type="range"]::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  appearance: none;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--border)),
+              0 3px 9px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.soft-intensity input[type="range"]::-moz-range-track {
+  height: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--mood-rose, var(--accent)) 24%, var(--border)),
+    color-mix(in srgb, var(--mood-lilac, var(--accent)) 32%, var(--border)),
+    color-mix(in srgb, var(--mood-aqua, var(--accent)) 24%, var(--border)));
+}
+
+.soft-intensity input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--border)),
+              0 3px 9px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.soft-intensity output {
+  min-width: 42px;
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+  border-radius: 6px;
+  color: var(--accent-ink, var(--accent));
+  background: var(--surface);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) {
+  --mood-rose: #bc5d83;
+  --mood-lilac: #8570b7;
+  --mood-aqua: #419ba3;
+  --mood-neutral-shadow: rgba(45, 34, 45, .075);
+  --mood-blur: clamp(6px, var(--soft-blur, 12px), 18px);
+}
+
+:root[data-mood="soft"] {
+  --mood-rose: #b86482;
+  --mood-lilac: #8d79b0;
+  --mood-aqua: #559ba0;
+  --mood-neutral-shadow: rgba(59, 42, 54, .065);
+}
+
+:root[data-theme="dark"]:is([data-mood="fusion"], [data-mood="soft"]) {
+  --mood-rose: #df88a7;
+  --mood-lilac: #aa98d5;
+  --mood-aqua: #73bec1;
+  --mood-neutral-shadow: rgba(0, 0, 0, .3);
+}
+
+:root[data-theme="dark"][data-mood="soft"] {
+  --mood-rose: #d58aa3;
+  --mood-lilac: #aa9acb;
+  --mood-aqua: #7ab4b7;
+}
+
+/* The same restrained color language is inherited by both HUD systems. */
+:root:is([data-mood="fusion"], [data-mood="soft"]) :is(.sidebar-hud, .chat-hud) {
+  --sci-cyan: color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), #39b8c6);
+  --sci-blue: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), #5b7fcb);
+  --sci-coral: color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), #d98270);
+  pointer-events: none;
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .app-shell {
+  background: linear-gradient(128deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--bg)) 0%,
+    var(--bg) 38%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--bg)) 68%,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--bg)) 100%);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .sidebar {
+  border-right-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(164deg,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--sidebar)) 0%,
+    var(--sidebar) 39%,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--sidebar)) 70%,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--sidebar)) 100%);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .sidebar-hud::before {
+  background: linear-gradient(122deg,
+      color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), transparent),
+      transparent 30%),
+    linear-gradient(304deg,
+      color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), transparent),
+      transparent 32%),
+    linear-gradient(180deg,
+      transparent 35%,
+      color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), transparent));
+  opacity: var(--soft-glow-opacity, .16);
+  pointer-events: none;
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .chat-panel {
+  background: linear-gradient(128deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--panel)) 0%,
+    var(--panel) 33%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--panel)) 64%,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--panel)) 100%);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .chat-panel::after {
+  inset: -28% -18%;
+  background: linear-gradient(110deg,
+    transparent 17%,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), transparent) 31%,
+    transparent 44%,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), transparent) 52%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), transparent) 59%,
+    transparent 76%);
+  opacity: var(--soft-glow-opacity, .16);
+  filter: blur(var(--mood-blur));
+  pointer-events: none;
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .chat-header {
+  border-bottom-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--panel)),
+    color-mix(in srgb, var(--panel) 82%, transparent) 45%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--panel)));
+  backdrop-filter: blur(var(--mood-blur)) saturate(1.07);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .chat-header::after {
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--accent)),
+    transparent);
+  opacity: var(--soft-glow-opacity, .16);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) :is(
+  .conversation-search,
+  .conversation-filters,
+  .conversation-item.active,
+  .profile-card,
+  .suggestion-list button,
+  .scroll-bottom-button,
+  .attachment-tray > span
+) {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(136deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--surface)),
+    var(--surface) 48%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--surface)));
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .conversation-item.active {
+  box-shadow: inset 0 0 22px color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), transparent),
+              0 7px 22px var(--mood-neutral-shadow);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .conversation-item.active::before {
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--sci-cyan)),
+    var(--accent),
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--sci-coral)));
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .message-row.assistant .message-bubble,
+:root:is([data-mood="fusion"], [data-mood="soft"]) .message-row.system .message-bubble {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(138deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--surface)),
+    var(--surface) 46%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--surface)));
+  box-shadow: 0 9px 28px color-mix(in srgb,
+    var(--mood-lilac) var(--soft-bg-mix, 8%),
+    var(--mood-neutral-shadow));
+  backdrop-filter: blur(var(--mood-blur)) saturate(1.04);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .message-row.user .message-bubble {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--accent-strong)),
+    var(--accent) 48%,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--accent-strong)));
+  box-shadow: 0 9px 26px color-mix(in srgb,
+    var(--mood-rose) var(--soft-bg-mix, 8%),
+    color-mix(in srgb, var(--accent) 16%, transparent));
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .composer-area {
+  background: linear-gradient(to bottom,
+    transparent,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--panel)) 20%,
+    var(--panel));
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .composer {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(132deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--surface)),
+    var(--surface) 52%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--surface)));
+  box-shadow: 0 12px 38px var(--mood-neutral-shadow);
+  backdrop-filter: blur(var(--mood-blur)) saturate(1.06);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .composer::before,
+:root:is([data-mood="fusion"], [data-mood="soft"]) .composer-area::before {
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--accent)),
+    transparent);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) :is(
+  .settings-drawer,
+  .workspace-library,
+  .account-dialog
+) {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(152deg,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--panel)) 0%,
+    var(--panel) 42%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--panel)) 70%,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--panel)) 100%);
+  backdrop-filter: blur(var(--mood-blur)) saturate(1.07);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) :is(.settings-drawer, .workspace-library)::before {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--accent)),
+    transparent);
+  content: "";
+  opacity: var(--soft-glow-opacity, .16);
+  pointer-events: none;
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .command-palette {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(146deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--surface)) 0%,
+    var(--surface) 42%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--surface)) 72%,
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--surface)) 100%);
+  box-shadow: 0 30px 94px var(--mood-neutral-shadow), 0 2px 14px rgba(8, 18, 13, .1);
+  backdrop-filter: blur(var(--mood-blur)) saturate(1.1);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .command-palette::before {
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--accent)),
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--accent)),
+    transparent);
+  opacity: var(--soft-glow-opacity, .16);
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) .command-palette-option.active {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(128deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--surface)),
+    color-mix(in srgb, var(--accent-soft) 54%, var(--surface)) 48%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--surface)));
+}
+
+:root:is([data-mood="fusion"], [data-mood="soft"]) :is(
+  .workspace-library__search,
+  .workspace-library__all-group,
+  .workspace-library__group,
+  .workspace-library__prompt-card,
+  .workspace-library__prompt-editor,
+  .account-profile,
+  .account-dialog input
+) {
+  border-color: color-mix(in srgb, var(--mood-lilac) var(--soft-bg-mix, 8%), var(--border));
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--mood-rose) var(--soft-bg-mix, 8%), var(--surface)),
+    var(--surface) 50%,
+    color-mix(in srgb, var(--mood-aqua) var(--soft-bg-mix, 8%), var(--surface)));
+}
+
+/* Fusion keeps the crisp HUD while adding a controlled spectrum ribbon. */
+:root[data-mood="fusion"] .sidebar-hud {
+  opacity: .9;
+}
+
+:root[data-mood="fusion"] .chat-hud {
+  opacity: .86;
+}
+
+/* Soft changes hierarchy and geometry even at 0% color intensity. */
+:root[data-mood="soft"] .chat-panel::before {
+  opacity: .34;
+  filter: saturate(.72);
+}
+
+:root[data-mood="soft"] :is(.sidebar-hud, .chat-hud) {
+  opacity: .62;
+}
+
+:root[data-mood="soft"] .sidebar-hud-grid {
+  opacity: .34;
+}
+
+:root[data-mood="soft"] :is(.sidebar-hud-rail, .chat-hud-rail) {
+  opacity: .34;
+}
+
+:root[data-mood="soft"] :is(.sidebar-hud-scan, .chat-hud-scan) {
+  filter: opacity(.54);
+}
+
+:root[data-mood="soft"] :is(.sidebar-hud-node, .chat-hud-node) {
+  filter: opacity(.72);
+}
+
+:root[data-mood="soft"] .message-row.assistant .message-bubble,
+:root[data-mood="soft"] .message-row.system .message-bubble {
+  border-radius: 10px 17px 17px 17px;
+}
+
+:root[data-mood="soft"] .message-row.user .message-bubble {
+  border-radius: 17px 17px 10px 17px;
+}
+
+:root[data-mood="soft"] :is(.suggestion-list button, .profile-card, .composer, .command-palette) {
+  box-shadow: 0 12px 34px var(--mood-neutral-shadow);
+}
+
+:root[data-mood="soft"] .chat-header::after,
+:root[data-mood="soft"] .composer::before,
+:root[data-mood="soft"] .composer-area::before {
+  filter: opacity(.72);
+}
+
+:root[data-mood="fusion"][data-motion="full"] .chat-panel::after {
+  animation: mood-ribbon-shift 18s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+
+:root[data-mood="soft"][data-motion="full"] .chat-panel::after {
+  animation: mood-ribbon-shift 24s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+
+@keyframes mood-ribbon-shift {
+  from { transform: translate3d(-11%, -1%, 0); }
+  to { transform: translate3d(11%, 1%, 0); }
+}
+
+:root[data-motion="reduced"]:is([data-mood="fusion"], [data-mood="soft"]) .chat-panel::after {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:is([data-mood="fusion"], [data-mood="soft"]) .chat-panel::after {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  :root:is([data-mood="fusion"], [data-mood="soft"]) {
+    --mood-blur: clamp(4px, var(--soft-blur, 8px), 10px);
+  }
+
+  :root:is([data-mood="fusion"], [data-mood="soft"]) .chat-panel::after {
+    filter: blur(var(--mood-blur)) opacity(.7);
+  }
+
+  :root:is([data-mood="fusion"], [data-mood="soft"]) .sidebar-hud::before {
+    filter: opacity(.72);
+  }
+
+  :root[data-mood="soft"] :is(.sidebar-hud, .chat-hud) {
+    opacity: .48;
+  }
+
+  .soft-intensity {
+    padding: 10px;
+  }
+
+  .chat-header {
+    gap: 8px;
+  }
+
+  .header-settings.personalize-button {
+    display: inline-grid;
+    flex: 0 0 35px;
+  }
+}

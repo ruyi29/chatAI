@@ -1,0 +1,474 @@
+/* Restrained motion layer. Import after base.css so these timings win. */
+:root {
+  --motion-ease-out: cubic-bezier(.16, 1, .3, 1);
+  --motion-ease-spring: cubic-bezier(.2, .85, .25, 1.14);
+  --motion-fast: 160ms;
+  --motion-medium: 360ms;
+  --motion-slow: 620ms;
+}
+
+:root:not([data-motion="reduced"]) .app-shell {
+  animation: motion-page-in var(--motion-slow) var(--motion-ease-out) both;
+}
+
+:root:not([data-motion="reduced"]) .sidebar {
+  animation: motion-sidebar-in 560ms var(--motion-ease-out) 40ms both;
+}
+
+:root:not([data-motion="reduced"]) .sidebar-header,
+:root:not([data-motion="reduced"]) .new-chat-button,
+:root:not([data-motion="reduced"]) .conversation-section,
+:root:not([data-motion="reduced"]) .sidebar-bottom {
+  animation: motion-rise-in 480ms var(--motion-ease-out) both;
+}
+
+:root:not([data-motion="reduced"]) .new-chat-button { animation-delay: 90ms; }
+:root:not([data-motion="reduced"]) .conversation-section { animation-delay: 135ms; }
+:root:not([data-motion="reduced"]) .sidebar-bottom { animation-delay: 180ms; }
+
+:root:not([data-motion="reduced"]) .brand-mark {
+  animation: motion-brand-in 680ms var(--motion-ease-spring) 110ms both;
+  transform-origin: 50% 55%;
+}
+
+:root:not([data-motion="reduced"]) .chat-header {
+  animation: motion-header-in 520ms var(--motion-ease-out) 80ms both;
+}
+
+/* A short stagger gives fresh and filtered conversation lists visual continuity. */
+:root:not([data-motion="reduced"]) .conversation-item {
+  animation: motion-list-item-in 360ms var(--motion-ease-out) both;
+  transition: background-color var(--motion-fast) ease,
+              border-color var(--motion-fast) ease,
+              box-shadow var(--motion-fast) ease,
+              transform var(--motion-fast) var(--motion-ease-out);
+}
+
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(1) { animation-delay: 55ms; }
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(2) { animation-delay: 80ms; }
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(3) { animation-delay: 105ms; }
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(4) { animation-delay: 130ms; }
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(5) { animation-delay: 155ms; }
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(6) { animation-delay: 180ms; }
+:root:not([data-motion="reduced"]) .conversation-item:nth-child(n + 7) { animation-delay: 205ms; }
+
+:root:not([data-motion="reduced"]) .conversation-item:hover {
+  transform: translateX(2px);
+}
+
+:root:not([data-motion="reduced"]) .conversation-item.active {
+  animation: motion-list-item-in 360ms var(--motion-ease-out) both,
+             motion-selected-settle 420ms var(--motion-ease-out) both;
+}
+
+:root:not([data-motion="reduced"]) .message-row {
+  animation: motion-message-in 460ms var(--motion-ease-out) both;
+  transform-origin: 0 100%;
+}
+
+:root:not([data-motion="reduced"]) .message-row.user {
+  animation-name: motion-message-user-in;
+  transform-origin: 100% 100%;
+}
+
+:root:not([data-motion="reduced"]) .message-avatar {
+  animation: motion-avatar-in 420ms var(--motion-ease-spring) 65ms both;
+}
+
+:root:not([data-motion="reduced"]) .message-bubble {
+  transition: transform var(--motion-fast) var(--motion-ease-out),
+              box-shadow var(--motion-fast) ease,
+              border-color var(--motion-fast) ease;
+}
+
+@media (hover: hover) {
+  :root:not([data-motion="reduced"]) .message-row:hover .message-bubble {
+    transform: translateY(-1px);
+  }
+}
+
+/* Streaming state: a quiet highlight travels through the active response. */
+:root:not([data-motion="reduced"]) .message-row.assistant:last-child .message-bubble.is-streaming {
+  position: relative;
+  overflow: hidden;
+}
+
+:root:not([data-motion="reduced"]) .message-row.assistant:last-child .message-bubble.is-streaming::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 28%, color-mix(in srgb, var(--accent) 9%, transparent) 48%, transparent 68%);
+  content: "";
+  pointer-events: none;
+  transform: translateX(-115%);
+  animation: motion-stream-sheen 1.8s ease-in-out infinite;
+}
+
+:root:not([data-motion="reduced"]) .typing-indicator span {
+  animation-timing-function: var(--motion-ease-out);
+}
+
+:root:not([data-motion="reduced"]) .streaming-indicator-enter-active,
+:root:not([data-motion="reduced"]) .streaming-indicator-leave-active {
+  transition: opacity 140ms ease, transform 140ms var(--motion-ease-out);
+}
+
+:root:not([data-motion="reduced"]) .streaming-indicator-enter-active {
+  transition-delay: 120ms;
+}
+
+:root:not([data-motion="reduced"]) .streaming-indicator-enter-from,
+:root:not([data-motion="reduced"]) .streaming-indicator-leave-to {
+  opacity: 0;
+  transform: translateY(2px);
+}
+
+:root:not([data-motion="reduced"]) .status-dot,
+:root:not([data-motion="reduced"]) .service-state:not(.offline) > .service-radar {
+  animation: motion-status-pulse 2.4s ease-out infinite;
+}
+
+:root:not([data-motion="reduced"]) .status-pill.streaming {
+  animation: motion-streaming-pill 1.8s ease-in-out infinite;
+}
+
+/* Composer feedback stays on transform/opacity and never changes its dimensions. */
+.composer {
+  position: relative;
+  isolation: isolate;
+}
+
+:root:not([data-motion="reduced"]) .composer {
+  transition: border-color 220ms ease,
+              box-shadow 280ms ease,
+              transform 220ms var(--motion-ease-out);
+}
+
+:root:not([data-motion="reduced"]) .composer::after {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: inherit;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.985);
+  transition: opacity 220ms ease, transform 300ms var(--motion-ease-out);
+}
+
+:root:not([data-motion="reduced"]) .composer:focus-within {
+  transform: translateY(-1px);
+}
+
+:root:not([data-motion="reduced"]) .composer:focus-within::after {
+  opacity: .72;
+  transform: scale(1);
+}
+
+:root:not([data-motion="reduced"]) .composer:has(.stop-button)::after {
+  animation: motion-composer-working 1.7s ease-in-out infinite;
+  opacity: .55;
+}
+
+:root:not([data-motion="reduced"]) .send-button:not(:disabled) svg {
+  transition: transform 220ms var(--motion-ease-spring);
+}
+
+:root:not([data-motion="reduced"]) .send-button:hover:not(:disabled) svg {
+  transform: translate(1px, -1px) rotate(-4deg);
+}
+
+:root:not([data-motion="reduced"]) .send-button:active:not(:disabled) svg {
+  transform: translate(2px, -2px) scale(.88);
+}
+
+:root:not([data-motion="reduced"]) .attachment-tray > span,
+:root:not([data-motion="reduced"]) .editing-notice,
+:root:not([data-motion="reduced"]) .error-notice {
+  animation: motion-chip-in 320ms var(--motion-ease-out) both;
+}
+
+:root:not([data-motion="reduced"]) .scroll-bottom-button {
+  animation: motion-float-in 360ms var(--motion-ease-spring) both;
+}
+
+:root:not([data-motion="reduced"]) .scroll-bottom-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Shared press feedback for controls that already own their visual treatment. */
+:root:not([data-motion="reduced"]) :is(
+  .icon-button,
+  .new-chat-button,
+  .suggestion-list button,
+  .profile-card,
+  .section-tool,
+  .conversation-filters button,
+  .tool-buttons button,
+  .segmented button,
+  .accent-options button,
+  .scroll-bottom-button
+) {
+  transition-duration: var(--motion-fast);
+  transition-timing-function: var(--motion-ease-out);
+}
+
+:root:not([data-motion="reduced"]) :is(
+  .icon-button,
+  .new-chat-button,
+  .suggestion-list button,
+  .profile-card,
+  .section-tool,
+  .conversation-filters button,
+  .tool-buttons button,
+  .segmented button,
+  .accent-options button,
+  .scroll-bottom-button
+):active:not(:disabled) {
+  transform: translateY(1px) scale(.97);
+  transition-duration: 70ms;
+}
+
+/* Vue drawer transitions get a firmer spring and a soft backdrop reveal. */
+:root:not([data-motion="reduced"]) .drawer-enter-active,
+:root:not([data-motion="reduced"]) .drawer-leave-active {
+  transition: opacity 260ms ease;
+}
+
+:root:not([data-motion="reduced"]) .drawer-enter-active .settings-drawer,
+:root:not([data-motion="reduced"]) .drawer-enter-active .workspace-library {
+  transition: transform 440ms var(--motion-ease-spring), opacity 240ms ease;
+}
+
+:root:not([data-motion="reduced"]) .drawer-leave-active .settings-drawer,
+:root:not([data-motion="reduced"]) .drawer-leave-active .workspace-library {
+  transition: transform 240ms cubic-bezier(.4, 0, 1, 1), opacity 180ms ease;
+}
+
+:root:not([data-motion="reduced"]) .drawer-enter-from .settings-drawer,
+:root:not([data-motion="reduced"]) .drawer-leave-to .settings-drawer,
+:root:not([data-motion="reduced"]) .drawer-enter-from .workspace-library,
+:root:not([data-motion="reduced"]) .drawer-leave-to .workspace-library {
+  opacity: .72;
+  transform: translateX(102%);
+}
+
+:root:not([data-motion="reduced"]) .delete-dialog[open] {
+  animation: motion-dialog-in 360ms var(--motion-ease-spring) both;
+}
+
+:root:not([data-motion="reduced"]) .delete-dialog[open]::backdrop {
+  animation: motion-backdrop-in 220ms ease both;
+}
+
+@media (max-width: 760px) {
+  :root:not([data-motion="reduced"]) .sidebar {
+    animation: none;
+    transition: transform 420ms var(--motion-ease-spring), box-shadow 260ms ease;
+  }
+
+  :root:not([data-motion="reduced"]) .sidebar-backdrop {
+    animation: motion-backdrop-in 220ms ease both;
+  }
+
+  :root:not([data-motion="reduced"]) .sidebar.open .sidebar-header,
+  :root:not([data-motion="reduced"]) .sidebar.open .new-chat-button,
+  :root:not([data-motion="reduced"]) .sidebar.open .conversation-section,
+  :root:not([data-motion="reduced"]) .sidebar.open .sidebar-bottom {
+    animation-name: motion-rise-in;
+  }
+}
+
+/* Explicit user preference takes priority over OS and component transitions. */
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  scroll-behavior: auto !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) *,
+  :root:not([data-motion="full"]) *::before,
+  :root:not([data-motion="full"]) *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+@keyframes motion-page-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes motion-sidebar-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-header-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes motion-rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes motion-brand-in {
+  0% { opacity: 0; transform: translateY(7px) scale(.78) rotate(-7deg); }
+  68% { opacity: 1; transform: translateY(0) scale(1.045) rotate(1deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+@keyframes motion-list-item-in {
+  from { opacity: 0; transform: translateX(-7px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-selected-settle {
+  0%, 100% { box-shadow: 0 5px 16px rgba(30, 50, 40, .05); }
+  50% { box-shadow: 0 7px 22px color-mix(in srgb, var(--accent) 12%, transparent); }
+}
+
+@keyframes motion-message-in {
+  from { opacity: 0; transform: translateX(-8px) translateY(8px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes motion-message-user-in {
+  from { opacity: 0; transform: translateX(8px) translateY(8px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes motion-avatar-in {
+  from { opacity: 0; transform: scale(.72) rotate(-6deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes motion-stream-sheen {
+  0%, 20% { opacity: 0; transform: translateX(-115%); }
+  45% { opacity: 1; }
+  78%, 100% { opacity: 0; transform: translateX(115%); }
+}
+
+@keyframes motion-status-pulse {
+  0%, 45%, 100% { box-shadow: 0 0 0 3px rgba(66, 174, 128, .12); }
+  72% { box-shadow: 0 0 0 7px rgba(66, 174, 128, 0); }
+}
+
+@keyframes motion-streaming-pill {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+@keyframes motion-composer-working {
+  0%, 100% { opacity: .25; transform: scale(.99); }
+  50% { opacity: .7; transform: scale(1.002); }
+}
+
+@keyframes motion-chip-in {
+  from { opacity: 0; transform: translateY(5px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes motion-float-in {
+  from { opacity: 0; transform: translateY(8px) scale(.82); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes motion-dialog-in {
+  from { opacity: 0; transform: translateY(12px) scale(.965); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes motion-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Vue list and control transitions. */
+:root:not([data-motion="reduced"]) .message-list-enter-active,
+:root:not([data-motion="reduced"]) .message-list-leave-active {
+  transition: opacity 180ms ease, transform 260ms var(--motion-ease-out);
+}
+:root:not([data-motion="reduced"]) .message-list-enter-from {
+  opacity: 0;
+  transform: translateY(9px) scale(.99);
+}
+:root:not([data-motion="reduced"]) .message-list-leave-to {
+  opacity: 0;
+  transform: translateY(-5px) scale(.99);
+}
+:root:not([data-motion="reduced"]) .message-list-move,
+:root:not([data-motion="reduced"]) .conversation-list-move {
+  transition: transform 320ms var(--motion-ease-out);
+}
+:root:not([data-motion="reduced"]) .conversation-list-enter-active,
+:root:not([data-motion="reduced"]) .conversation-list-leave-active {
+  transition: opacity 150ms ease, transform 220ms var(--motion-ease-out);
+}
+:root:not([data-motion="reduced"]) .conversation-list-enter-from,
+:root:not([data-motion="reduced"]) .conversation-list-leave-to {
+  opacity: 0;
+  transform: translateX(-7px) scale(.985);
+}
+:root:not([data-motion="reduced"]) .attachment-chip-enter-active,
+:root:not([data-motion="reduced"]) .attachment-chip-leave-active,
+:root:not([data-motion="reduced"]) .composer-detail-enter-active,
+:root:not([data-motion="reduced"]) .composer-detail-leave-active {
+  transition: opacity 150ms ease, transform 220ms var(--motion-ease-out);
+}
+:root:not([data-motion="reduced"]) .attachment-chip-enter-from,
+:root:not([data-motion="reduced"]) .attachment-chip-leave-to,
+:root:not([data-motion="reduced"]) .composer-detail-enter-from,
+:root:not([data-motion="reduced"]) .composer-detail-leave-to {
+  opacity: 0;
+  transform: translateY(5px) scale(.97);
+}
+:root:not([data-motion="reduced"]) .composer-action-enter-active,
+:root:not([data-motion="reduced"]) .composer-action-leave-active {
+  transition: opacity 100ms ease, transform 150ms var(--motion-ease-spring);
+}
+:root:not([data-motion="reduced"]) .composer-action-enter-from {
+  opacity: 0;
+  transform: scale(.72) rotate(-9deg);
+}
+:root:not([data-motion="reduced"]) .composer-action-leave-to {
+  opacity: 0;
+  transform: scale(.78) rotate(7deg);
+}
+:root:not([data-motion="reduced"]) .sidebar-fade-enter-active,
+:root:not([data-motion="reduced"]) .sidebar-fade-leave-active {
+  transition: opacity 180ms ease;
+}
+:root:not([data-motion="reduced"]) .sidebar-fade-enter-from,
+:root:not([data-motion="reduced"]) .sidebar-fade-leave-to {
+  opacity: 0;
+}
+
+/* Subtle keeps useful spatial transitions and removes decorative loops/reveals. */
+:root[data-motion="subtle"] .app-shell,
+:root[data-motion="subtle"] .sidebar,
+:root[data-motion="subtle"] .sidebar-header,
+:root[data-motion="subtle"] .new-chat-button,
+:root[data-motion="subtle"] .conversation-section,
+:root[data-motion="subtle"] .sidebar-bottom,
+:root[data-motion="subtle"] .brand-mark,
+:root[data-motion="subtle"] .chat-header,
+:root[data-motion="subtle"] .conversation-item,
+:root[data-motion="subtle"] .message-row,
+:root[data-motion="subtle"] .message-avatar,
+:root[data-motion="subtle"] .status-dot,
+:root[data-motion="subtle"] .service-state > .service-radar,
+:root[data-motion="subtle"] .status-pill.streaming {
+  animation: none;
+}
+
+:root[data-motion="subtle"] .message-row.assistant:last-child .message-bubble::after {
+  display: none;
+}
